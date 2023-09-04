@@ -1,11 +1,17 @@
-use std::{path::PathBuf, fs, process::ExitCode};
-
+use std::{path::PathBuf, fs, process::ExitCode, env};
 use home;
 
 /// ToolInst module for configs.
 pub mod config;
+/// ToolInst CLI.
+pub mod cli;
 
 fn main() -> ExitCode {
+    let args: Vec<String> = env::args().collect();
+    if let Some(exit_code) = cli::run_args(args) {
+        return exit_code;
+    }
+
     let config_path = match home::home_dir() {
         Some(dir) => dir.join(".toolinstrc"),
         None => PathBuf::new(),
@@ -23,8 +29,6 @@ fn main() -> ExitCode {
             return ExitCode::from(1);
         },
     };
-
-    println!("Configs:\nInstall: {}\nCompressed dir: {}\nInstaller dir: {}", config.install_path.display(), config.compressed_dir.display(), config.installer_dir.display());
 
     ExitCode::from(0)
 }
