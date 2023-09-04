@@ -1,5 +1,8 @@
 use std::process::ExitCode;
 
+/// All ToolInst commands.
+pub mod commands;
+
 /// Executes actions depending on CLI arguments.
 /// 
 /// If termination is needed, it will return `Some()` with the proper `ExitCode`.
