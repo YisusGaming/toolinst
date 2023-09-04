@@ -7,10 +7,7 @@ pub mod config;
 pub mod cli;
 
 fn main() -> ExitCode {
-    let args: Vec<String> = env::args().collect();
-    if let Some(exit_code) = cli::run_args(args) {
-        return exit_code;
-    }
+    let args: Vec<String> = env::args().skip(1).collect();
 
     let config_path = match home::home_dir() {
         Some(dir) => dir.join(".toolinstrc"),
@@ -29,6 +26,10 @@ fn main() -> ExitCode {
             return ExitCode::from(1);
         },
     };
+
+    if let Some(exit_code) = cli::run_args(args, &config) {
+        return exit_code;
+    }
 
     ExitCode::from(0)
 }

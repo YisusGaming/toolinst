@@ -6,7 +6,7 @@ pub fn list(config: &config::ToolInst) {
     if let Ok(entries) = config.compressed_dir.read_dir() {
         for entry in entries {
             if let Ok(entry) = entry {
-                println!("{}", entry.file_name().to_str().unwrap_or(&entry.file_name().to_string_lossy()));
+                println!("|   {}", entry.file_name().to_str().unwrap_or(&entry.file_name().to_string_lossy()));
             } else {
                 eprintln!("\nFailed to read entry in .compresed directory.\n");
             }
@@ -15,11 +15,11 @@ pub fn list(config: &config::ToolInst) {
         eprintln!("Failed to read .compressed directory.\n");
     }
 
-    println!("Installer: ");
+    println!("\nInstaller: ");
     if let Ok(entries) = config.installer_dir.read_dir() {
         for entry in entries {
             if let Ok(entry) = entry {
-                println!("{}", entry.file_name().to_str().unwrap_or(&entry.file_name().to_string_lossy()));
+                println!("|   {}", entry.file_name().to_str().unwrap_or(&entry.file_name().to_string_lossy()));
             } else {
                 eprintln!("\nFailed to read entry in .installer directory.\n");
             }
