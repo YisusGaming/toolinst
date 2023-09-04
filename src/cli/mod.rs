@@ -1,4 +1,4 @@
-use std::{process::ExitCode, env::Args, path::PathBuf};
+use std::{process::ExitCode, path::PathBuf};
 
 use crate::config;
 
@@ -21,6 +21,7 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
             println!("\nCommands:");
             println!("    list - Lists the contents of .compressed and .installer respectively.");
             println!("    comp [options] <file> - Moves a compressed file to the .compressed directory.");
+            println!("    inst [options] <file> - Moves an installer to the .installer directory.");
             println!("\nOptions: ");
             println!("    --version | Prints the toolinst version.");
             println!("    --help | Prints this message.");
@@ -43,6 +44,23 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
                 }
                 let path = PathBuf::from(args.get(i).unwrap_or(&String::new()));
                 if let Err(err) = commands::comp(options, &path, &config) {
+                    eprintln!("Err! {}", err.to_string());
+                    return Some(ExitCode::from(1));
+                }
+            },
+            "inst" => {
+                let mut options = Vec::new();
+                while let Some(option) = args.get(i + 1) {
+                    if option.starts_with("--") {
+                        options.push(option.clone());
+                        i += 1;
+                    } else {
+                        i += 1;
+                        break;
+                    }
+                }
+                let path = PathBuf::from(args.get(i).unwrap_or(&String::new()));
+                if let Err(err) = commands::inst(options, &path, &config) {
                     eprintln!("Err! {}", err.to_string());
                     return Some(ExitCode::from(1));
                 }
