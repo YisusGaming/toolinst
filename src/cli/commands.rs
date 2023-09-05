@@ -1,4 +1,5 @@
-use std::{path::PathBuf, fs, io};
+use std::{path::PathBuf, fs::{self, File}, io};
+use zip_extract;
 
 use crate::config;
 
@@ -95,4 +96,19 @@ pub fn inst(options: Vec<String>, file: &PathBuf, config: &config::ToolInst) -> 
     }
 
     Err(io::Error::new(io::ErrorKind::InvalidInput, "The file doesn't exist or doesn't seem to be a file."))
+}
+
+/// Unzips a compressed file into the install directory.
+pub fn depackage(file_path: &PathBuf, config: &config::ToolInst) -> io::Result<()> {
+    if !file_path.is_file() {
+        return Err(io::Error::new(io::ErrorKind::InvalidInput, "The file doesn't exist or doesn't seem to be a file."));
+    }
+
+    println!("Depackaging {} into {}...", file_path.display(), config.install_path.join(file_path.file_stem().unwrap()).display());
+    let file = File::open(file_path)?;
+    if let Err(err) = zip_extract::extract(file, &config.install_path.join(file_path.file_stem().unwrap()), true) {
+        return Err(io::Error::new(io::ErrorKind::Other, err));
+    }
+
+    Ok(())
 }

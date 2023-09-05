@@ -22,6 +22,7 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
             println!("    list - Lists the contents of .compressed and .installer respectively.");
             println!("    comp [options] <file> - Moves a compressed file to the .compressed directory.");
             println!("    inst [options] <file> - Moves an installer to the .installer directory.");
+            println!("    depackage <file> - Unzips a compressed file into the install directory.");
             println!("\nOptions: ");
             println!("    --version | Prints the toolinst version.");
             println!("    --help | Prints this message.");
@@ -63,6 +64,15 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
                 if let Err(err) = commands::inst(options, &path, &config) {
                     eprintln!("Err! {}", err.to_string());
                     return Some(ExitCode::from(1));
+                }
+            },
+            "depackage" => {
+                i += 1;
+                if let Some(path) = args.get(i) {
+                    if let Err(err) = commands::depackage(&PathBuf::from(path), &config) {
+                        eprintln!("Err! {}", err.to_string());
+                        return Some(ExitCode::from(1));
+                    }
                 }
             }
             _ => {
