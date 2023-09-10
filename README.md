@@ -1,8 +1,10 @@
 <div align="center">
     <h1>ToolInst</h1>
-
+    
     CLI written in Rust to handle installers and programs.
 </div>
+
+[![build](https://github.com/YisusGaming/toolinst/actions/workflows/rust_build.yml/badge.svg)](https://github.com/YisusGaming/toolinst/actions/workflows/rust_build.yml)
 
 With **ToolInst** you can organize compressed files and installers into one single folder. You can manage this folder with just a few simple commands.
 
