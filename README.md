@@ -32,7 +32,7 @@ INSTALLER_DIR_NAME=name_or_path
 
 It's recommended that you create these folders before using ToolInst, commands may fail if these folders don't exist.
 
-Finally, you can run `toolinst --help` in your terminal to see all commands you can use. Hope it'll useful!
+Finally, you can run `toolinst --help` in your terminal to see all commands you can use. Hope it'll be useful!
 
 # Installation
 Toolinst is uploaded to `crates.io`.
