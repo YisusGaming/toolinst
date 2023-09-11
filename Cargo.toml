@@ -1,6 +1,15 @@
 [package]
 name = "toolinst"
 version = "0.1.0"
+authors = ["Jesús Blanco"]
+license = "CC-BY-SA-4.0"
+description = "CLI written in Rust to handle installers and programs."
+readme = "README.md"
+homepage = "https://github.com/YisusGaming/toolinst"
+repository = "https://github.com/YisusGaming/toolinst"
+keywords = ["cli", "tools", "manager", "cli-tools", "installer"]
+categories = ["command-line-utilities"]
+
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
