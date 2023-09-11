@@ -35,11 +35,14 @@ It's recommended that you create these folders before using ToolInst, commands m
 Finally, you can run `toolinst --help` in your terminal to see all commands you can use. Hope it'll useful!
 
 # Installation
-You can install ToolInst by downloading a release from the releases page.
+Toolinst is uploaded to `crates.io`.
+To install it, you can run the following command in your terminal:
+```sh
+cargo install toolinst
+```
+And that's it! You can try running `toolinst --version` in your terminal, if you get a version number then everything should be working fine.
 
-You simply have to unzip the file and add the resulting folder to your path.
-
-If you want, you can also build from source by cloning this repository and running this command in the cloned repository:
+If you want, you can also build from source by cloning this github repository and running this command in the cloned repository:
 ```sh
 cargo build --release
 ```
@@ -48,7 +51,7 @@ This will build ToolInst in release mode. You can add it to your `~/.cargo/bin` 
 cargo install --path .
 ```
 
-That should work. You can try running `toolinst --version` in your terminal, if you get output then everything should be working fine.
+That should work. You can try running `toolinst --version` in your terminal, if you get a version number then everything should be working fine.
 
 # License
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">ToolInst</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://youtube.com/@yisuscoding" property="cc:attributionName" rel="cc:attributionURL">YisusGaming</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
