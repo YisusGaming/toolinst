@@ -1,6 +1,6 @@
 [package]
 name = "toolinst"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Jesús Blanco"]
 license = "CC-BY-SA-4.0"
 description = "CLI written in Rust to handle installers and programs."

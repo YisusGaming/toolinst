@@ -375,7 +375,7 @@ checksum = "7300fbefb4dadc1af235a9cef3737cea692a9d97e1b9cbcd4ebdae6f8868e6fb"
 
 [[package]]
 name = "toolinst"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "home",
  "zip-extract",
