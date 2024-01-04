@@ -1,4 +1,8 @@
-use std::{path::PathBuf, fs::{self, File}, io};
+use std::{
+    fs::{self, File},
+    io,
+    path::PathBuf,
+};
 use zip_extract;
 
 use crate::config;
@@ -9,7 +13,13 @@ pub fn list(config: &config::ToolInst) {
     if let Ok(entries) = config.compressed_dir.read_dir() {
         for entry in entries {
             if let Ok(entry) = entry {
-                println!("|   {}", entry.file_name().to_str().unwrap_or(&entry.file_name().to_string_lossy()));
+                println!(
+                    "|   {}",
+                    entry
+                        .file_name()
+                        .to_str()
+                        .unwrap_or(&entry.file_name().to_string_lossy())
+                );
             } else {
                 eprintln!("\nFailed to read entry in .compresed directory.\n");
             }
@@ -22,7 +32,13 @@ pub fn list(config: &config::ToolInst) {
     if let Ok(entries) = config.installer_dir.read_dir() {
         for entry in entries {
             if let Ok(entry) = entry {
-                println!("|   {}", entry.file_name().to_str().unwrap_or(&entry.file_name().to_string_lossy()));
+                println!(
+                    "|   {}",
+                    entry
+                        .file_name()
+                        .to_str()
+                        .unwrap_or(&entry.file_name().to_string_lossy())
+                );
             } else {
                 eprintln!("\nFailed to read entry in .installer directory.\n");
             }
@@ -33,7 +49,7 @@ pub fn list(config: &config::ToolInst) {
 }
 
 /// Moves a compressed file to the .compressed directory.
-pub fn comp(options: Vec<String>, file: &PathBuf, config: &config::ToolInst) -> io::Result<()> {
+pub fn comp(options: &[String], file: &PathBuf, config: &config::ToolInst) -> io::Result<()> {
     let mut use_copy = false;
 
     for option in options {
@@ -54,19 +70,36 @@ pub fn comp(options: Vec<String>, file: &PathBuf, config: &config::ToolInst) -> 
 
     if file.is_file() && !use_copy {
         fs::rename(file, config.compressed_dir.join(file.file_name().unwrap()))?;
-        println!("Done.\n{} -> {}", file.display(), config.compressed_dir.join(file.file_name().unwrap()).display());
+        println!(
+            "Done.\n{} -> {}",
+            file.display(),
+            config
+                .compressed_dir
+                .join(file.file_name().unwrap())
+                .display()
+        );
         return Ok(());
     } else if use_copy {
         fs::copy(file, config.compressed_dir.join(file.file_name().unwrap()))?;
-        println!("Done.\n{} -(copy)> {}", file.display(), config.compressed_dir.join(file.file_name().unwrap()).display());
+        println!(
+            "Done.\n{} -(copy)> {}",
+            file.display(),
+            config
+                .compressed_dir
+                .join(file.file_name().unwrap())
+                .display()
+        );
         return Ok(());
     }
 
-    Err(io::Error::new(io::ErrorKind::InvalidInput, "The file doesn't exist or doesn't seem to be a file."))
+    Err(io::Error::new(
+        io::ErrorKind::InvalidInput,
+        "The file doesn't exist or doesn't seem to be a file.",
+    ))
 }
 
 /// Moves an installer to the .installer directory.
-pub fn inst(options: Vec<String>, file: &PathBuf, config: &config::ToolInst) -> io::Result<()> {
+pub fn inst(options: &[String], file: &PathBuf, config: &config::ToolInst) -> io::Result<()> {
     let mut use_copy = false;
 
     for option in options {
@@ -87,26 +120,57 @@ pub fn inst(options: Vec<String>, file: &PathBuf, config: &config::ToolInst) -> 
 
     if file.is_file() && !use_copy {
         fs::rename(file, config.installer_dir.join(file.file_name().unwrap()))?;
-        println!("Done.\n{} -> {}", file.display(), config.installer_dir.join(file.file_name().unwrap()).display());
+        println!(
+            "Done.\n{} -> {}",
+            file.display(),
+            config
+                .installer_dir
+                .join(file.file_name().unwrap())
+                .display()
+        );
         return Ok(());
     } else if use_copy {
         fs::copy(file, config.installer_dir.join(file.file_name().unwrap()))?;
-        println!("Done.\n{} -(copy)> {}", file.display(), config.installer_dir.join(file.file_name().unwrap()).display());
+        println!(
+            "Done.\n{} -(copy)> {}",
+            file.display(),
+            config
+                .installer_dir
+                .join(file.file_name().unwrap())
+                .display()
+        );
         return Ok(());
     }
 
-    Err(io::Error::new(io::ErrorKind::InvalidInput, "The file doesn't exist or doesn't seem to be a file."))
+    Err(io::Error::new(
+        io::ErrorKind::InvalidInput,
+        "The file doesn't exist or doesn't seem to be a file.",
+    ))
 }
 
 /// Unzips a compressed file into the install directory.
 pub fn depackage(file_path: &PathBuf, config: &config::ToolInst) -> io::Result<()> {
     if !file_path.is_file() {
-        return Err(io::Error::new(io::ErrorKind::InvalidInput, "The file doesn't exist or doesn't seem to be a file."));
+        return Err(io::Error::new(
+            io::ErrorKind::InvalidInput,
+            "The file doesn't exist or doesn't seem to be a file.",
+        ));
     }
 
-    println!("Depackaging {} into {}...", file_path.display(), config.install_path.join(file_path.file_stem().unwrap()).display());
+    println!(
+        "Depackaging {} into {}...",
+        file_path.display(),
+        config
+            .install_path
+            .join(file_path.file_stem().unwrap())
+            .display()
+    );
     let file = File::open(file_path)?;
-    if let Err(err) = zip_extract::extract(file, &config.install_path.join(file_path.file_stem().unwrap()), true) {
+    if let Err(err) = zip_extract::extract(
+        file,
+        &config.install_path.join(file_path.file_stem().unwrap()),
+        true,
+    ) {
         return Err(io::Error::new(io::ErrorKind::Other, err));
     }
 

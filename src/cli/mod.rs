@@ -1,4 +1,4 @@
-use std::{process::ExitCode, path::PathBuf};
+use std::{path::PathBuf, process::ExitCode};
 
 use crate::config;
 
@@ -6,7 +6,7 @@ use crate::config;
 pub mod commands;
 
 /// Executes actions depending on CLI arguments.
-/// 
+///
 /// If termination is needed, it will return `Some()` with the proper `ExitCode`.
 pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode> {
     let mut i = 0;
@@ -20,18 +20,20 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
             println!("    toolinst [options] <commands>");
             println!("\nCommands:");
             println!("    list - Lists the contents of .compressed and .installer respectively.");
-            println!("    comp [options] <file> - Moves a compressed file to the .compressed directory.");
+            println!(
+                "    comp [options] <file> - Moves a compressed file to the .compressed directory."
+            );
             println!("    inst [options] <file> - Moves an installer to the .installer directory.");
             println!("    depackage <file> - Unzips a compressed file into the install directory.");
             println!("\nOptions: ");
             println!("    --version | Prints the toolinst version.");
             println!("    --help | Prints this message.");
-            
+
             return Some(ExitCode::from(0));
         }
-        
+
         match arg.trim() {
-            "list" => {commands::list(config)},
+            "list" => commands::list(config),
             "comp" => {
                 let mut options = Vec::new();
                 while let Some(option) = args.get(i + 1) {
@@ -44,11 +46,11 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
                     }
                 }
                 let path = PathBuf::from(args.get(i).unwrap_or(&String::new()));
-                if let Err(err) = commands::comp(options, &path, &config) {
+                if let Err(err) = commands::comp(&options, &path, &config) {
                     eprintln!("Err! {}", err.to_string());
                     return Some(ExitCode::from(1));
                 }
-            },
+            }
             "inst" => {
                 let mut options = Vec::new();
                 while let Some(option) = args.get(i + 1) {
@@ -61,11 +63,11 @@ pub fn run_args(args: Vec<String>, config: &config::ToolInst) -> Option<ExitCode
                     }
                 }
                 let path = PathBuf::from(args.get(i).unwrap_or(&String::new()));
-                if let Err(err) = commands::inst(options, &path, &config) {
+                if let Err(err) = commands::inst(&options, &path, &config) {
                     eprintln!("Err! {}", err.to_string());
                     return Some(ExitCode::from(1));
                 }
-            },
+            }
             "depackage" => {
                 i += 1;
                 if let Some(path) = args.get(i) {
